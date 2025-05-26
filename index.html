@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNAB Cloud - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .progress-bar {
+            animation: progress 2s ease-in-out forwards;
+        }
+        @keyframes progress {
+            from { width: 0; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="sidebar bg-blue-800 text-white w-64 flex-shrink-0">
+            <div class="p-4 flex items-center space-x-2 border-b border-blue-700">
+                <i class="fas fa-cloud text-2xl"></i>
+                <span class="text-xl font-bold">UNAB CUP</span>
+            </div>
+            <nav class="p-4">
+                <div class="mb-8">
+                    <h3 class="text-xs uppercase tracking-wider text-blue-400 mb-4">Principal</h3>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="Index.html" class="flex items-center space-x-2 bg-blue-700 px-3 py-2 rounded-md">
+                                <i class="fas fa-tachometer-alt w-5"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Maquinavirtual.html" class="flex items-center space-x-2 hover:bg-blue-700 px-3 py-2 rounded-md">
+                                <i class="fas fa-server w-5"></i>
+                                <span>Máquinas Virtuales</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Almacenamiento.html" class="flex items-center space-x-2 hover:bg-blue-700 px-3 py-2 rounded-md">
+                                <i class="fas fa-hdd w-5"></i>
+                                <span>Almacenamiento</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="metricas.html" class="flex items-center space-x-2 hover:bg-blue-700 px-3 py-2 rounded-md">
+                                <i class="fas fa-chart-bar w-5"></i>
+                                <span>Métricas</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="p-3 bg-blue-700 rounded-md text-sm">
+                    <div class="flex justify-between items-center mb-2">
+                        <span>Almacenamiento</span>
+                        <span>45%</span>
+                    </div>
+                    <div class="w-full bg-blue-600 rounded-full h-2">
+                        <div class="bg-white rounded-full h-2 progress-bar" style="width: 45%"></div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Topbar -->
+            <header class="bg-white shadow-sm py-4 px-6 flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-500 focus:outline-none">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="text-xl font-semibold text-gray-800">Dashboard</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                            LP
+                        </div>
+                        <span class="text-sm font-medium">Lucas Porras</span>
+                    </div>
+                </div>
+            </header>
+            <!-- Content -->
+            <main class="flex-1 overflow-y-auto p-6 bg-gray-100">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <div class="bg-white rounded-lg shadow-sm p-6 card-hover">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Máquinas Virtuales</p>
+                                <h3 class="text-2xl font-bold mt-1">8</h3>
+                                <p class="text-green-500 text-xs mt-2">
+                                    <i class="fas fa-arrow-up"></i> 2 nuevas esta semana
+                                </p>
+                            </div>
+                            <div class="bg-blue-100 p-3 rounded-full">
+                                <i class="fas fa-server text-blue-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6 card-hover">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Almacenamiento</p>
+                                <h3 class="text-2xl font-bold mt-1">245GB</h3>
+                                <p class="text-gray-500 text-xs mt-2">de 1TB (24.5%)</p>
+                            </div>
+                            <div class="bg-green-100 p-3 rounded-full">
+                                <i class="fas fa-hdd text-green-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6 card-hover">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Uso de CPU</p>
+                                <h3 class="text-2xl font-bold mt-1">78%</h3>
+                                <p class="text-red-500 text-xs mt-2">
+                                    <i class="fas fa-exclamation-circle"></i> 2 VMs con alto uso
+                                </p>
+                            </div>
+                            <div class="bg-purple-100 p-3 rounded-full">
+                                <i class="fas fa-microchip text-purple-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6 card-hover">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Proyectos Activos</p>
+                                <h3 class="text-2xl font-bold mt-1">5</h3>
+                                <p class="text-blue-500 text-xs mt-2">
+                                    <i class="fas fa-users"></i> 3 colaboradores
+                                </p>
+                            </div>
+                            <div class="bg-yellow-100 p-3 rounded-full">
+                                <i class="fas fa-folder-open text-yellow-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Sections -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Máquinas Virtuales -->
+                    <div class="lg:col-span-2 bg-white rounded-lg shadow-sm overflow-hidden">
+                        <div class="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+                            <h2 class="font-semibold text-lg">Máquinas Virtuales</h2>
+                            <button class="text-blue-600 text-sm font-medium">Ver todas</button>
+                        </div>
+                        <div class="divide-y divide-gray-200">
+                            <div class="px-6 py-4 flex items-center justify-between hover:bg-gray-50">
+                                <div class="flex items-center space-x-4">
+                                    <div class="bg-green-100 p-2 rounded-full">
+                                        <i class="fas fa-server text-green-600"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium">vm-investigacion-01</h3>
+                                        <p class="text-gray-500 text-sm">Ubuntu 22.04 • 4 vCPU • 16GB RAM</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">Activa</span>
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="px-6 py-4 flex items-center justify-between hover:bg-gray-50">
+                                <div class="flex items-center space-x-4">
+                                    <div class="bg-yellow-100 p-2 rounded-full">
+                                        <i class="fas fa-server text-yellow-600"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium">vm-docencia-03</h3>
+                                        <p class="text-gray-500 text-sm">Windows Server • 2 vCPU • 8GB RAM</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">Inactiva</span>
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="px-6 py-4 flex items-center justify-between hover:bg-gray-50">
+                                <div class="flex items-center space-x-4">
+                                    <div class="bg-red-100 p-2 rounded-full">
+                                        <i class="fas fa-server text-red-600"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium">vm-datos-02</h3>
+                                        <p class="text-gray-500 text-sm">CentOS 8 • 8 vCPU • 32GB RAM</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">Crítico</span>
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="px-6 py-4 flex items-center justify-between hover:bg-gray-50">
+                                <div class="flex items-center space-x-4">
+                                    <div class="bg-blue-100 p-2 rounded-full">
+                                        <i class="fas fa-server text-blue-600"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium">vm-desarrollo-01</h3>
+                                        <p class="text-gray-500 text-sm">Debian 11 • 2 vCPU • 4GB RAM</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">Activa</span>
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-6 py-3 text-center">
+                            <button class="text-blue-600 font-medium text-sm">
+                                <i class="fas fa-plus mr-1"></i> Crear nueva VM
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Almacenamiento -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                        <div class="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+                            <h2 class="font-semibold text-lg">Almacenamiento</h2>
+                            <button class="text-blue-600 text-sm font-medium">Ver todo</button>
+                        </div>
+                        <div class="p-6">
+                            <div class="mb-6">
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span>Espacio utilizado: 245GB</span>
+                                    <span>1TB</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-blue-600 h-2 rounded-full" style="width: 24.5%"></div>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-md">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="bg-blue-100 p-2 rounded-lg">
+                                            <i class="fas fa-folder text-blue-600"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium">Investigación</h3>
+                                            <p class="text-gray-500 text-xs">145GB • Última mod: hoy</p>
+                                        </div>
+                                    </div>
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                                <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-md">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="bg-green-100 p-2 rounded-lg">
+                                            <i class="fas fa-folder text-green-600"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium">Docencia</h3>
+                                            <p class="text-gray-500 text-xs">65GB • Última mod: ayer</p>
+                                        </div>
+                                    </div>
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                                <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-md">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="bg-purple-100 p-2 rounded-lg">
+                                            <i class="fas fa-folder text-purple-600"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium">Proyectos</h3>
+                                            <p class="text-gray-500 text-xs">35GB • Última mod: 2 días</p>
+                                        </div>
+                                    </div>
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-6 py-3 text-center">
+                            <button class="text-blue-600 font-medium text-sm">
+                                <i class="fas fa-upload mr-1"></i> Subir archivos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Métricas -->
+                <div class="mt-6 bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div class="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+                        <h2 class="font-semibold text-lg">Métricas de Uso</h2>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 bg-blue-100 text-blue-600 rounded-md text-sm">7 días</button>
+                            <button class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm">30 días</button>
+                            <button class="px-3 py-1 bg-gray-100 text-gray-600 rounded-md text-sm">90 días</button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="text-gray-500 text-sm mb-1">CPU</div>
+                                <div class="text-2xl font-bold mb-2">78%</div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-blue-600 h-2 rounded-full" style="width: 78%"></div>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="text-gray-500 text-sm mb-1">Memoria</div>
+                                <div class="text-2xl font-bold mb-2">64%</div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-500 h-2 rounded-full" style="width: 64%"></div>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="text-gray-500 text-sm mb-1">Red</div>
+                                <div class="text-2xl font-bold mb-2">12MB/s</div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-purple-500 h-2 rounded-full" style="width: 60%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="h-64 bg-gray-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-chart-line text-4xl text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Toggle sidebar on mobile
+        document.querySelector('.fa-bars').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('-translate-x-full');
+        });
+
+        // Simulate loading animations
+        document.querySelectorAll('.progress-bar').forEach(bar => {
+            const width = bar.style.width;
+            bar.style.width = '0';
+            setTimeout(() => {
+                bar.style.width = width;
+            }, 100);
+        });
+
+        // Card hover effects
+        document.querySelectorAll('.card-hover').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px)';
+                this.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+                this.style.boxShadow = '';
+            });
+        });
+    </script>
+</body>
+</html>
