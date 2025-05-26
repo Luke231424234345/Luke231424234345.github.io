@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNAB Cloud - Métricas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .progress-bar {
+            animation: progress 2s ease-in-out forwards;
+        }
+        @keyframes progress {
+            from { width: 0; }
+        }
+        .metric-card {
+            transition: all 0.3s ease;
+        }
+        .metric-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        .trend-up {
+            color: #10B981;
+        }
+        .trend-down {
+            color: #EF4444;
+        }
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="sidebar bg-blue-800 text-white w-64 flex-shrink-0">
+            <div class="p-4 flex items-center space-x-2 border-b border-blue-700">
+                <i class="fas fa-cloud text-2xl"></i>
+                <span class="text-xl font-bold">UNAB CUP</span>
+            </div>
+            <nav class="p-4">
+                <div class="mb-8">
+                    <h3 class="text-xs uppercase tracking-wider text-blue-400 mb-4">Principal</h3>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="Index.html" class="flex items-center space-x-2 hover:bg-blue-700 px-3 py-2 rounded-md">
+                                <i class="fas fa-tachometer-alt w-5"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Maquinavirtual.html" class="flex items-center space-x-2 hover:bg-blue-700 px-3 py-2 rounded-md">
+                                <i class="fas fa-server w-5"></i>
+                                <span>Máquinas Virtuales</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Almacenamiento.html" class="flex items-center space-x-2 hover:bg-blue-700 px-3 py-2 rounded-md">
+                                <i class="fas fa-hdd w-5"></i>
+                                <span>Almacenamiento</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="metricas.html" class="flex items-center space-x-2 bg-blue-700 px-3 py-2 rounded-md">
+                                <i class="fas fa-chart-bar w-5"></i>
+                                <span>Métricas</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="p-3 bg-blue-700 rounded-md text-sm">
+                    <div class="flex justify-between items-center mb-2">
+                        <span>Almacenamiento</span>
+                        <span>45%</span>
+                    </div>
+                    <div class="w-full bg-blue-600 rounded-full h-2">
+                        <div class="bg-white rounded-full h-2 progress-bar" style="width: 45%"></div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 overflow-auto">
+            <header class="bg-white shadow-sm p-4">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-bold text-gray-800">Métricas del Sistema</h1>
+                    <div class="flex space-x-4">
+                        <div class="relative">
+                            <select class="appearance-none bg-white border border-gray-300 rounded-md px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>Últimas 24 horas</option>
+                                <option>Últimos 7 días</option>
+                                <option selected>Últimos 30 días</option>
+                                <option>Personalizado</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center space-x-2">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>Actualizar</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <main class="p-6">
+                <!-- Key Metrics -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow-md p-6 metric-card">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Uso de CPU</p>
+                                <h3 class="text-2xl font-bold mt-1">68%</h3>
+                                <div class="flex items-center mt-2">
+                                    <span class="text-sm font-medium trend-up">
+                                        <i class="fas fa-arrow-up mr-1"></i> 5.2%
+                                    </span>
+                                    <span class="text-sm text-gray-500 ml-2">vs ayer</span>
+                                </div>
+                            </div>
+                            <div class="bg-blue-100 p-3 rounded-full">
+                                <i class="fas fa-microchip text-blue-600 text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="chart-container">
+                                <canvas id="cpuChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6 metric-card">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Uso de Memoria</p>
+                                <h3 class="text-2xl font-bold mt-1">4.2/8 GB</h3>
+                                <div class="flex items-center mt-2">
+                                    <span class="text-sm font-medium trend-down">
+                                        <i class="fas fa-arrow-down mr-1"></i> 1.8%
+                                    </span>
+                                    <span class="text-sm text-gray-500 ml-2">vs ayer</span>
+                                </div>
+                            </div>
+                            <div class="bg-purple-100 p-3 rounded-full">
+                                <i class="fas fa-memory text-purple-600 text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="chart-container">
+                                <canvas id="memoryChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6 metric-card">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Almacenamiento</p>
+                                <h3 class="text-2xl font-bold mt-1">675 GB</h3>
+                                <div class="flex items-center mt-2">
+                                    <span class="text-sm font-medium trend-up">
+                                        <i class="fas fa-arrow-up mr-1"></i> 12.4%
+                                    </span>
+                                    <span class="text-sm text-gray-500 ml-2">vs semana pasada</span>
+                                </div>
+                            </div>
+                            <div class="bg-green-100 p-3 rounded-full">
+                                <i class="fas fa-hdd text-green-600 text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="chart-container">
+                                <canvas id="storageChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6 metric-card">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Tráfico de Red</p>
+                                <h3 class="text-2xl font-bold mt-1">1.2 TB</h3>
+                                <div class="flex items-center mt-2">
+                                    <span class="text-sm font-medium trend-up">
+                                        <i class="fas fa-arrow-up mr-1"></i> 8.1%
+                                    </span>
+                                    <span class="text-sm text-gray-500 ml-2">vs semana pasada</span>
+                                </div>
+                            </div>
+                            <div class="bg-red-100 p-3 rounded-full">
+                                <i class="fas fa-network-wired text-red-600 text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="chart-container">
+                                <canvas id="networkChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Metrics -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <!-- CPU Usage by VM -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-4 bg-gray-50 border-b flex justify-between items-center">
+                            <h2 class="text-xl font-bold text-gray-800">Uso de CPU por Máquina Virtual</h2>
+                            <button class="text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                        <div class="p-4">
+                            <div class="chart-container" style="height: 350px;">
+                                <canvas id="cpuUsageChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Memory Usage by VM -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-4 bg-gray-50 border-b flex justify-between items-center">
+                            <h2 class="text-xl font-bold text-gray-800">Uso de Memoria por Máquina Virtual</h2>
+                            <button class="text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                        <div class="p-4">
+                            <div class="chart-container" style="height: 350px;">
+                                <canvas id="memoryUsageChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Storage Metrics -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+                    <div class="p-4 bg-gray-50 border-b flex justify-between items-center">
+                        <h2 class="text-xl font-bold text-gray-800">Métricas de Almacenamiento</h2>
+                        <div class="flex space-x-2">
+                            <button class="text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="font-medium text-gray-700 mb-4">Espacio Utilizado por Tipo</h3>
+                            <div class="chart-container" style="height: 250px;">
+                                <canvas id="storagePieChart"></canvas>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-gray-700 mb-4">Crecimiento de Almacenamiento</h3>
+                            <div class="chart-container" style="height: 250px;">
+                                <canvas id="storageGrowthChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Network Metrics -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="p-4 bg-gray-50 border-b flex justify-between items-center">
+                        <h2 class="text-xl font-bold text-gray-800">Métricas de Red</h2>
+                        <div class="flex space-x-2">
+                            <button class="text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="networkTrafficChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate progress bars
+            const progressBars = document.querySelectorAll('.progress-bar');
+            progressBars.forEach(bar => {
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.transition = 'width 1.5s ease-in-out';
+                    bar.style.width = bar.getAttribute('style').split('width: ')[1].split(';')[0];
+                }, 100);
+            });
+            
+            // Small metric charts
+            const cpuCtx = document.getElementById('cpuChart').getContext('2d');
+            const cpuChart = new Chart(cpuCtx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 12}, (_, i) => `${i*2}h`),
+                    datasets: [{
+                        data: [45, 50, 55, 60, 65, 70, 68, 65, 70, 72, 68, 65],
+                        borderColor: '#3B82F6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { display: false },
+                        y: { display: false }
+                    }
+                }
+            });
+            
+            const memoryCtx = document.getElementById('memoryChart').getContext('2d');
+            const memoryChart = new Chart(memoryCtx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 12}, (_, i) => `${i*2}h`),
+                    datasets: [{
+                        data: [3.8, 4.0, 4.1, 4.2, 4.1, 4.3, 4.2, 4.1, 4.0, 4.2, 4.3, 4.2],
+                        borderColor: '#8B5CF6',
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { display: false },
+                        y: { display: false }
+                    }
+                }
+            });
+            
+            const storageCtx = document.getElementById('storageChart').getContext('2d');
+            const storageChart = new Chart(storageCtx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 7}, (_, i) => `${i+1}d`),
+                    datasets: [{
+                        data: [580, 600, 620, 630, 640, 660, 675],
+                        borderColor: '#10B981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { display: false },
+                        y: { display: false }
+                    }
+                }
+            });
+            
+            const networkCtx = document.getElementById('networkChart').getContext('2d');
+            const networkChart = new Chart(networkCtx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 7}, (_, i) => `${i+1}d`),
+                    datasets: [{
+                        data: [0.8, 0.9, 1.0, 1.1, 1.15, 1.18, 1.2],
+                        borderColor: '#EF4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { display: false },
+                        y: { display: false }
+                    }
+                }
+            });
+            
+            // CPU Usage by VM
+            const cpuUsageCtx = document.getElementById('cpuUsageChart').getContext('2d');
+            const cpuUsageChart = new Chart(cpuUsageCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Web Server', 'DB Server', 'App Server', 'Backup Server', 'Dev Server'],
+                    datasets: [{
+                        label: 'Uso de CPU (%)',
+                        data: [75, 60, 55, 40, 85],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.7)',
+                            'rgba(59, 130, 246, 0.7)',
+                            'rgba(59, 130, 246, 0.7)',
+                            'rgba(59, 130, 246, 0.7)',
+                            'rgba(239, 68, 68, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(239, 68, 68, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + '%';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Memory Usage by VM
+            const memoryUsageCtx = document.getElementById('memoryUsageChart').getContext('2d');
+            const memoryUsageChart = new Chart(memoryUsageCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Web Server', 'DB Server', 'App Server', 'Backup Server', 'Dev Server'],
+                    datasets: [{
+                        label: 'Uso de Memoria (GB)',
+                        data: [3.5, 5.2, 2.8, 1.5, 4.8],
+                        backgroundColor: [
+                            'rgba(139, 92, 246, 0.7)',
+                            'rgba(139, 92, 246, 0.7)',
+                            'rgba(139, 92, 246, 0.7)',
+                            'rgba(139, 92, 246, 0.7)',
+                            'rgba(239, 68, 68, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(139, 92, 246, 1)',
+                            'rgba(139, 92, 246, 1)',
+                            'rgba(139, 92, 246, 1)',
+                            'rgba(139, 92, 246, 1)',
+                            'rgba(239, 68, 68, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + ' GB';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Storage Pie Chart
+            const storagePieCtx = document.getElementById('storagePieChart').getContext('2d');
+            const storagePieChart = new Chart(storagePieCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Sistema', 'Bases de Datos', 'Archivos', 'Backups', 'Logs'],
+                    datasets: [{
+                        data: [120, 250, 150, 100, 55],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.7)',
+                            'rgba(139, 92, 246, 0.7)',
+                            'rgba(16, 185, 129, 0.7)',
+                            'rgba(249, 115, 22, 0.7)',
+                            'rgba(156, 163, 175, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(139, 92, 246, 1)',
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(249, 115, 22, 1)',
+                            'rgba(156, 163, 175, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} GB (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Storage Growth Chart
+            const storageGrowthCtx = document.getElementById('storageGrowthChart').getContext('2d');
+            const storageGrowthChart = new Chart(storageGrowthCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul'],
+                    datasets: [{
+                        label: 'Almacenamiento Utilizado (GB)',
+                        data: [400, 450, 480, 520, 550, 600, 675],
+                        borderColor: '#10B981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+            
+            // Network Traffic Chart
+            const networkTrafficCtx = document.getElementById('networkTrafficChart').getContext('2d');
+            const networkTrafficChart = new Chart(networkTrafficCtx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 24}, (_, i) => `${i}h`),
+                    datasets: [
+                        {
+                            label: 'Entrada (MB)',
+                            data: [120, 110, 90, 80, 70, 80, 100, 150, 200, 220, 210, 190, 180, 170, 160, 180, 200, 220, 250, 230, 200, 180, 150, 130],
+                            borderColor: '#3B82F6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Salida (MB)',
+                            data: [80, 70, 60, 50, 40, 50, 70, 100, 150, 180, 170, 150, 140, 130, 120, 140, 160, 180, 200, 180, 150, 130, 100, 90],
+                            borderColor: '#EF4444',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y + ' MB';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

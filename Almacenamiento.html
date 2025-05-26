@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNAB Cloud - Almacenamiento</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .progress-bar {
+            animation: progress 2s ease-in-out forwards;
+        }
+        @keyframes progress {
+            from { width: 0; }
+        }
+        .storage-card {
+            transition: all 0.3s ease;
+        }
+        .storage-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .file-icon {
+            width: 40px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+        .directory-tree li {
+            position: relative;
+            padding-left: 20px;
+        }
+        .directory-tree li::before {
+            content: "";
+            position: absolute;
+            left: 5px;
+            top: 15px;
+            width: 10px;
+            height: 1px;
+            background-color: #94a3b8;
+        }
+        .directory-tree li::after {
+            content: "";
+            position: absolute;
+            left: 5px;
+            top: 5px;
+            width: 1px;
+            height: 10px;
+            background-color: #94a3b8;
+        }
+        .directory-tree li:last-child::after {
+            height: 5px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="sidebar bg-blue-800 text-white w-64 flex-shrink-0">
+            <div class="p-4 flex items-center space-x-2 border-b border-blue-700">
+                <i class="fas fa-cloud text-2xl"></i>
+                <span class="text-xl font-bold">UNAB CUP</span>
+            </div>
+            <nav class="p-4">
+                <div class="mb-8">
+                    <h3 class="text-xs uppercase tracking-wider text-blue-400 mb-4">Principal</h3>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="Index.html" class="flex items-center space-x-2 hover:bg-blue-700 px-3 py-2 rounded-md">
+                                <i class="fas fa-tachometer-alt w-5"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Maquinavirtual.html" class="flex items-center space-x-2 hover:bg-blue-700 px-3 py-2 rounded-md">
+                                <i class="fas fa-server w-5"></i>
+                                <span>Máquinas Virtuales</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Almacenamiento.html" class="flex items-center space-x-2 bg-blue-700 px-3 py-2 rounded-md">
+                                <i class="fas fa-hdd w-5"></i>
+                                <span>Almacenamiento</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="metricas.html" class="flex items-center space-x-2 hover:bg-blue-700 px-3 py-2 rounded-md">
+                                <i class="fas fa-chart-bar w-5"></i>
+                                <span>Métricas</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+               
+                <div class="p-3 bg-blue-700 rounded-md text-sm">
+                    <div class="flex justify-between items-center mb-2">
+                        <span>Almacenamiento</span>
+                        <span>45%</span>
+                    </div>
+                    <div class="w-full bg-blue-600 rounded-full h-2">
+                        <div class="bg-white rounded-full h-2 progress-bar" style="width: 45%"></div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!-- Main Content -->
+        <div class="flex-1 overflow-auto">
+            <header class="bg-white shadow-sm p-4">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-bold text-gray-800">Almacenamiento en la Nube</h1>
+                    <div class="flex space-x-4">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center space-x-2">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>Actualizar</span>
+                        </button>
+                        <button id="add-storage-btn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md flex items-center space-x-2">
+                            <i class="fas fa-plus"></i>
+                            <span>Agregar Almacenamiento</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <main class="p-6">
+                <!-- Storage Overview -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow-md p-6 storage-card">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-semibold text-gray-700">Almacenamiento Total</h3>
+                            <i class="fas fa-database text-blue-500 text-xl"></i>
+                        </div>
+                        <div class="text-3xl font-bold mb-2">1.5 TB</div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-500 h-2 rounded-full" style="width: 45%"></div>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">675 GB de 1.5 TB utilizados</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6 storage-card">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-semibold text-gray-700">Backups</h3>
+                            <i class="fas fa-copy text-purple-500 text-xl"></i>
+                        </div>
+                        <div class="text-3xl font-bold mb-2">320 GB</div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-purple-500 h-2 rounded-full" style="width: 32%"></div>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">102 GB de 320 GB utilizados</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6 storage-card">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-semibold text-gray-700">Snapshots</h3>
+                            <i class="fas fa-camera text-green-500 text-xl"></i>
+                        </div>
+                        <div class="text-3xl font-bold mb-2">150 GB</div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-500 h-2 rounded-full" style="width: 75%"></div>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">112 GB de 150 GB utilizados</p>
+                    </div>
+                </div>
+
+                <!-- Storage Devices -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+                    <div class="p-4 bg-gray-50 border-b flex justify-between items-center">
+                        <h2 class="text-xl font-bold text-gray-800">Dispositivos de Almacenamiento</h2>
+                        <button class="text-blue-600 hover:text-blue-800">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                    <div class="divide-y divide-gray-200">
+                        <div class="p-4 hover:bg-gray-50 transition-colors duration-200">
+                            <div class="flex items-center space-x-4">
+                                <div class="file-icon bg-blue-100 text-blue-600">
+                                    <i class="fas fa-server text-xl"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-medium">Almacenamiento Principal</h3>
+                                    <p class="text-sm text-gray-500">SSD NVMe - 1.5 TB</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-medium">675 GB / 1.5 TB</p>
+                                    <div class="w-32 bg-gray-200 rounded-full h-2 mt-1">
+                                        <div class="bg-blue-500 h-2 rounded-full" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                                <button class="text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 hover:bg-gray-50 transition-colors duration-200">
+                            <div class="flex items-center space-x-4">
+                                <div class="file-icon bg-purple-100 text-purple-600">
+                                    <i class="fas fa-hdd text-xl"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-medium">Backup Storage</h3>
+                                    <p class="text-sm text-gray-500">HDD - 4 TB</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-medium">1.2 TB / 4 TB</p>
+                                    <div class="w-32 bg-gray-200 rounded-full h-2 mt-1">
+                                        <div class="bg-purple-500 h-2 rounded-full" style="width: 30%"></div>
+                                    </div>
+                                </div>
+                                <button class="text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 hover:bg-gray-50 transition-colors duration-200">
+                            <div class="flex items-center space-x-4">
+                                <div class="file-icon bg-green-100 text-green-600">
+                                    <i class="fas fa-network-wired text-xl"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-medium">NAS Corporativo</h3>
+                                    <p class="text-sm text-gray-500">Network Attached Storage - 10 TB</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-medium">3.5 TB / 10 TB</p>
+                                    <div class="w-32 bg-gray-200 rounded-full h-2 mt-1">
+                                        <div class="bg-green-500 h-2 rounded-full" style="width: 35%"></div>
+                                    </div>
+                                </div>
+                                <button class="text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- File Browser -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Directory Tree -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-4 bg-gray-50 border-b">
+                            <h2 class="text-xl font-bold text-gray-800">Estructura de Archivos</h2>
+                        </div>
+                        <div class="p-4">
+                            <ul class="directory-tree space-y-2">
+                                <li>
+                                    <div class="flex items-center space-x-2 cursor-pointer">
+                                        <i class="fas fa-folder text-yellow-500"></i>
+                                        <span class="font-medium">Proyectos</span>
+                                    </div>
+                                    <ul class="ml-4 mt-2 space-y-2">
+                                        <li>
+                                            <div class="flex items-center space-x-2 cursor-pointer">
+                                                <i class="fas fa-folder text-yellow-500"></i>
+                                                <span>Web</span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="flex items-center space-x-2 cursor-pointer">
+                                                <i class="fas fa-folder text-yellow-500"></i>
+                                                <span>Mobile</span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="flex items-center space-x-2 cursor-pointer">
+                                                <i class="fas fa-folder text-yellow-500"></i>
+                                                <span>Database</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <div class="flex items-center space-x-2 cursor-pointer">
+                                        <i class="fas fa-folder text-yellow-500"></i>
+                                        <span class="font-medium">Backups</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="flex items-center space-x-2 cursor-pointer">
+                                        <i class="fas fa-folder text-yellow-500"></i>
+                                        <span class="font-medium">Documentos</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="flex items-center space-x-2 cursor-pointer">
+                                        <i class="fas fa-folder text-yellow-500"></i>
+                                        <span class="font-medium">Media</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- File List -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden lg:col-span-2">
+                        <div class="p-4 bg-gray-50 border-b flex justify-between items-center">
+                            <h2 class="text-xl font-bold text-gray-800">Archivos en "Proyectos/Web"</h2>
+                            <div class="flex space-x-2">
+                                <button class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded">
+                                    <i class="fas fa-upload"></i>
+                                </button>
+                                <button class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <button class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="divide-y divide-gray-200">
+                            <div class="p-4 hover:bg-gray-50 transition-colors duration-200">
+                                <div class="flex items-center space-x-4">
+                                    <div class="file-icon bg-blue-100 text-blue-600">
+                                        <i class="fas fa-file-code text-xl"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h3 class="font-medium">index.html</h3>
+                                        <p class="text-sm text-gray-500">HTML Document · 12 KB</p>
+                                    </div>
+                                    <div class="text-sm text-gray-500">
+                                        Última modificación: 2 días
+                                    </div>
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 hover:bg-gray-50 transition-colors duration-200">
+                                <div class="flex items-center space-x-4">
+                                    <div class="file-icon bg-purple-100 text-purple-600">
+                                        <i class="fas fa-file-alt text-xl"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h3 class="font-medium">styles.css</h3>
+                                        <p class="text-sm text-gray-500">CSS Document · 45 KB</p>
+                                    </div>
+                                    <div class="text-sm text-gray-500">
+                                        Última modificación: 1 día
+                                    </div>
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 hover:bg-gray-50 transition-colors duration-200">
+                                <div class="flex items-center space-x-4">
+                                    <div class="file-icon bg-yellow-100 text-yellow-600">
+                                        <i class="fas fa-file-code text-xl"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h3 class="font-medium">app.js</h3>
+                                        <p class="text-sm text-gray-500">JavaScript · 120 KB</p>
+                                    </div>
+                                    <div class="text-sm text-gray-500">
+                                        Última modificación: 3 horas
+                                    </div>
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 hover:bg-gray-50 transition-colors duration-200">
+                                <div class="flex items-center space-x-4">
+                                    <div class="file-icon bg-green-100 text-green-600">
+                                        <i class="fas fa-file-image text-xl"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h3 class="font-medium">logo.png</h3>
+                                        <p class="text-sm text-gray-500">PNG Image · 250 KB</p>
+                                    </div>
+                                    <div class="text-sm text-gray-500">
+                                        Última modificación: 1 semana
+                                    </div>
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 hover:bg-gray-50 transition-colors duration-200">
+                                <div class="flex items-center space-x-4">
+                                    <div class="file-icon bg-red-100 text-red-600">
+                                        <i class="fas fa-file-archive text-xl"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h3 class="font-medium">assets.zip</h3>
+                                        <p class="text-sm text-gray-500">ZIP Archive · 15 MB</p>
+                                    </div>
+                                    <div class="text-sm text-gray-500">
+                                        Última modificación: 2 semanas
+                                    </div>
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate progress bars
+            const progressBars = document.querySelectorAll('.progress-bar');
+            progressBars.forEach(bar => {
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.transition = 'width 1.5s ease-in-out';
+                    bar.style.width = bar.getAttribute('style').split('width: ')[1].split(';')[0];
+                }, 100);
+            });
+            
+            // Directory tree interaction
+            const folderItems = document.querySelectorAll('.directory-tree li > div');
+            folderItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const sublist = this.nextElementSibling;
+                    if (sublist && sublist.tagName === 'UL') {
+                        sublist.style.display = sublist.style.display === 'none' ? 'block' : 'none';
+                    }
+                });
+            });
+            
+            // Initially hide all subdirectories
+            document.querySelectorAll('.directory-tree ul').forEach(ul => {
+                ul.style.display = 'none';
+            });
+            
+            // Add storage button functionality
+            const addStorageBtn = document.getElementById('add-storage-btn');
+            addStorageBtn.addEventListener('click', function() {
+                alert('Funcionalidad para agregar nuevo almacenamiento');
+                // In a real application, this would open a modal or form
+            });
+        });
+    </script>
+</body>
+</html>
